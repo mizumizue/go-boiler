@@ -97,9 +97,4 @@ docker-compose rm -f
 ```
 # only root endpoint
 curl -XGET http://localhost:8080
-
 ```
-
-head -n 1 go.mod | awk '{print substr($0, index($0, "g"))}'
-
-head -n 1 go.mod | cut -c 8-

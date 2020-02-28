@@ -13,6 +13,8 @@ RUN apk add --no-cache git
 RUN go build -o app
 RUN go get gopkg.in/urfave/cli.v2@master
 RUN go get github.com/oxequa/realize
+RUN go get -u github.com/go-delve/delve/cmd/dlv
+RUN go build -o /go/bin/dlv github.com/go-delve/delve/cmd/dlv
 
 # Application container
 FROM alpine:latest
