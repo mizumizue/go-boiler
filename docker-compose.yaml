@@ -1,0 +1,38 @@
+version: '3.7'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/app/Dockerfile
+      target: build
+      args:
+        - GO_VERSION=$GO_VERSION
+        - MODULE=$MODULE
+    volumes:
+      - ./:/go/src/$MODULE
+    working_dir: /go/src/$MODULE
+    command: [realize, start, --run]
+    ports:
+      - 8080:1323
+      - 2345:2345
+    security_opt:
+      - apparmor:unconfined
+    cap_add:
+      - SYS_PTRACE
+  mysql:
+    build:
+      dockerfile: ./docker/persistence/mysql/Dockerfile
+      context: .
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    restart: always
+    env_file:
+      - ./docker/persistence/mysql/.env
+    ports:
+      - 3306:3306
+  postgres:
+    image: postgres:12.1-alpine
+    restart: always
+    env_file:
+      - ./docker/persistence/postgres/.env
+    ports:
+      - 5432:5432
