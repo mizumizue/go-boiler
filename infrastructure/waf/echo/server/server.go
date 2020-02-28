@@ -2,7 +2,10 @@ package server
 
 import (
 	"fmt"
+
 	"github.com/labstack/echo/v4"
+	"github.com/trewanek/go-echo-boiler/infrastructure/validator"
+	"github.com/trewanek/go-echo-boiler/infrastructure/waf/echo/handler"
 	"github.com/trewanek/go-echo-boiler/infrastructure/waf/echo/middleware"
 	"github.com/trewanek/go-echo-boiler/infrastructure/waf/echo/router"
 )
@@ -25,6 +28,8 @@ func NewServer() *server {
 func (server *server) Run() {
 	server.routing()
 	server.setMiddleware()
+	server.setValidator()
+	server.setErrorHandler()
 	server.Logger.Fatal(server.Start(DefaultPort))
 }
 
@@ -36,7 +41,15 @@ func (server *server) routing() {
 }
 
 func (server *server) setMiddleware() {
-	for _, m := range middleware.Middlewares {
+	for _, m := range middleware.MiddlewareList {
 		server.Use(m.MiddlewareFunc)
 	}
+}
+
+func (server *server) setValidator() {
+	server.Validator = validator.New()
+}
+
+func (server *server) setErrorHandler() {
+	server.HTTPErrorHandler = handler.ErrorHandler
 }
