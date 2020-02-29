@@ -1,21 +1,22 @@
 package handler
 
 import (
-	"github.com/labstack/echo/v4"
-	ierror "github.com/trewanek/go-echo-boiler/interface/error"
 	"net/http"
+
+	"github.com/labstack/echo/v4"
+	"github.com/trewanek/go-echo-boiler/application/usecase"
+	"github.com/trewanek/go-echo-boiler/infrastructure/persistence/memory"
+	"github.com/trewanek/go-echo-boiler/interface/controller"
+	"github.com/trewanek/go-echo-boiler/interface/presenter"
 )
 
 func FetchUsers(echo echo.Context) error {
-	type req struct {
-		Hoge string `json:"hoge" validate:"required"`
-	}
-
-	if err := echo.Validate(req{}); err != nil {
-		return ierror.NewValidationErr(err)
-	}
-
-	return echo.String(http.StatusOK, "Hello, World! FetchUsers Endpoints")
+	ctx := echo.Request().Context()
+	userRepo := memory.NewUserRepository()
+	pre := presenter.NewUserPresenter(echo)
+	use := usecase.NewUserUseCase(userRepo, pre)
+	ctr := controller.NewUserController(use)
+	return ctr.FetchUsers(ctx)
 }
 
 func FetchUserByID(echo echo.Context) error {
