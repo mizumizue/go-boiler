@@ -1,4 +1,4 @@
-# go-echo-boiler
+# go-boiler
 
 ## Library
 
