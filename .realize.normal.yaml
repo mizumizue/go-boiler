@@ -11,14 +11,7 @@ schema:
         method: go build -o app
       run:
         status: true
-        method: /go/bin/dlv
-    args:
-      - exec
-      - ./app
-      - --headless=true
-      - --listen=:2345
-      - --api-version=2
-      - --accept-multiclient
+        method: ./app
     watcher:
       extensions:
         - go

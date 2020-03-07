@@ -76,11 +76,14 @@ If you execute `goenv local {OTHER_VESION}`.
 You should do resetting.
 `source .envrc`
 
-## Run local server: http://localhost:8080
+## Run local server: http://localhost:8080(DebugPort:2345)
 
 ```
 # Normally
-docker-compose up -d
+./run.sh
+
+# Debug Mode
+./debug.sh
 
 # After change Dockerfile or go version(rebuild image)
 docker-compose up -d --build
@@ -92,9 +95,6 @@ docker-compose stop
 docker-compose rm -f
 ```
 
-### You can request endpoints
+## Reference
 
-```
-# only root endpoint
-curl -XGET http://localhost:8080
-```
+- [Docker上のGoLangをリモートデバッグする](https://qiita.com/keitakn/items/f46347f871083356149b)
